@@ -14,29 +14,36 @@ class QuizScreen extends StatefulWidget {
 class _QuizScreenState extends State<QuizScreen> {
   int questionNumber = 0;
   int answeredQuestions = 0;
+  var selectedAnswer = "";
+  var actualAnswer = "";
+  var correctAnswers = 0;
 
-  void stepUpQuestionNumber() {
+  void stepUpQuestionNumber(String currentelySelectedAnswer) {
     answeredQuestions++;
-
     if (answeredQuestions >= questions.length) {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => const ResultScreen(),
+          builder: (context) => ResultScreen(correctAnswers, questions.length),
         ),
       );
-    }
+    } else {
+      actualAnswer = questions[questionNumber].answers[0];
+      selectedAnswer = currentelySelectedAnswer;
+      if (selectedAnswer == actualAnswer) {
+        correctAnswers++;
+      }
 
-    setState(() {
-      questionNumber++;
-    });
+      setState(() {
+        questionNumber++;
+      });
+    }
   }
 
   @override
   Widget build(context) {
-    var shuffledAnswers = questions[questionNumber].answers.toList()..shuffle();
-    print(questions[questionNumber].answers.toList());
-    print("hello");
+    var shuffledAnswers = [...questions[questionNumber].answers]..shuffle();
+
     return Container(
       decoration: const BoxDecoration(
         image: DecorationImage(
@@ -84,7 +91,9 @@ class _QuizScreenState extends State<QuizScreen> {
                   bottom: 12,
                 ),
                 child: TextButton(
-                  onPressed: stepUpQuestionNumber,
+                  onPressed: () {
+                    stepUpQuestionNumber(answer);
+                  },
                   style: TextButton.styleFrom(
                     foregroundColor: Colors.white,
                   ),
