@@ -39,6 +39,8 @@ class _ResultScreenState extends State<ResultScreen> {
       comment = "Good";
       color = Colors.blue;
     }
+
+    print(listOfResultQuestions.length);
     return MaterialApp(
       home: Scaffold(
         body: Container(

@@ -29,30 +29,30 @@ class _QuizScreenState extends State<QuizScreen> {
           builder: (context) => ResultScreen(
             correctAnswers,
             questions.length,
-            listOfResultQuestions!,
+            listOfResultQuestions,
           ),
         ),
       );
-    } else {
-      actualAnswer = questions[questionNumber].answers[0];
-      selectedAnswer = currentelySelectedAnswer;
-      if (selectedAnswer == actualAnswer) {
-        listOfResultQuestions.add(
-          ResultQuestion(
-              questions[questionNumber].question, true, questionNumber),
-        );
-        correctAnswers++;
-      } else {
-        listOfResultQuestions.add(
-          ResultQuestion(
-              questions[questionNumber].question, false, questionNumber),
-        );
-      }
-
-      setState(() {
-        questionNumber++;
-      });
     }
+
+    actualAnswer = questions[questionNumber].answers[0];
+    selectedAnswer = currentelySelectedAnswer;
+    if (selectedAnswer == actualAnswer) {
+      listOfResultQuestions.add(
+        ResultQuestion(
+            questions[questionNumber].question, true, questionNumber),
+      );
+      correctAnswers++;
+    } else {
+      listOfResultQuestions.add(
+        ResultQuestion(
+            questions[questionNumber].question, false, questionNumber),
+      );
+    }
+
+    setState(() {
+      questionNumber++;
+    });
   }
 
   @override
