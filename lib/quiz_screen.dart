@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_quiz_app/Data/questions.dart';
+import 'package:flutter_quiz_app/Model/result_question.dart';
 import 'package:flutter_quiz_app/result_screen.dart';
 
 class QuizScreen extends StatefulWidget {
@@ -17,6 +18,7 @@ class _QuizScreenState extends State<QuizScreen> {
   var selectedAnswer = "";
   var actualAnswer = "";
   var correctAnswers = 0;
+  List<ResultQuestion> listOfResultQuestions = [];
 
   void stepUpQuestionNumber(String currentelySelectedAnswer) {
     answeredQuestions++;
@@ -24,14 +26,27 @@ class _QuizScreenState extends State<QuizScreen> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => ResultScreen(correctAnswers, questions.length),
+          builder: (context) => ResultScreen(
+            correctAnswers,
+            questions.length,
+            listOfResultQuestions!,
+          ),
         ),
       );
     } else {
       actualAnswer = questions[questionNumber].answers[0];
       selectedAnswer = currentelySelectedAnswer;
       if (selectedAnswer == actualAnswer) {
+        listOfResultQuestions.add(
+          ResultQuestion(
+              questions[questionNumber].question, true, questionNumber),
+        );
         correctAnswers++;
+      } else {
+        listOfResultQuestions.add(
+          ResultQuestion(
+              questions[questionNumber].question, false, questionNumber),
+        );
       }
 
       setState(() {

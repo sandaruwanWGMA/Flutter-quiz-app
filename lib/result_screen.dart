@@ -1,21 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_quiz_app/Model/result_question.dart';
 import 'package:flutter_quiz_app/quiz.dart';
 
 class ResultScreen extends StatefulWidget {
-  const ResultScreen(this.correctAnswers, this.totalQuestions, {super.key});
+  const ResultScreen(
+      this.correctAnswers, this.totalQuestions, this.listOfResultQuestions,
+      {super.key});
   final int correctAnswers;
   final int totalQuestions;
+  final List<ResultQuestion> listOfResultQuestions;
 
   @override
   State<ResultScreen> createState() {
-    return _ResultScreenState(correctAnswers, totalQuestions);
+    return _ResultScreenState(
+        correctAnswers, totalQuestions, listOfResultQuestions);
   }
 }
 
 class _ResultScreenState extends State<ResultScreen> {
-  _ResultScreenState(this.correctAnswers, this.totalQuestions);
+  _ResultScreenState(
+      this.correctAnswers, this.totalQuestions, this.listOfResultQuestions);
   final int correctAnswers;
   final int totalQuestions;
+  final List<ResultQuestion> listOfResultQuestions;
+
   var comment = "";
   Color color = Colors.transparent;
 
@@ -58,7 +66,7 @@ class _ResultScreenState extends State<ResultScreen> {
                   ),
                 ),
                 const SizedBox(
-                  height: 36,
+                  height: 24,
                 ),
                 Center(
                   child: Text(
@@ -69,6 +77,68 @@ class _ResultScreenState extends State<ResultScreen> {
                       fontWeight: FontWeight.w700,
                     ),
                   ),
+                ),
+                const SizedBox(
+                  height: 124,
+                ),
+                SizedBox(
+                  height: 200,
+                  child: ListView(
+                    children: <Widget>[
+                      ...listOfResultQuestions.map(
+                        (e) => Container(
+                          margin: const EdgeInsets.all(14),
+                          child: Row(
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: e.isCorrect
+                                      ? Colors.blue
+                                      : Colors.redAccent,
+                                  borderRadius: BorderRadius.circular(35),
+                                ),
+                                width: 70,
+                                height: 70,
+                                padding: const EdgeInsets.all(18),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      (e.index + 1).toString(),
+                                      style: const TextStyle(
+                                        fontSize: 28,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 20,
+                              ),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      e.question,
+                                      style: const TextStyle(
+                                        fontSize: 18,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 64,
                 ),
                 TextButton.icon(
                   style: TextButton.styleFrom(
